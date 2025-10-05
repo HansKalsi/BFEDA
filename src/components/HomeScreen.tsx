@@ -80,23 +80,25 @@ export function HomeScreen() {
             <Group mb="xl" justify="center">
                 <PlacesAutocomplete setSelected={setSelected} />
             </Group>
-            {JSON.stringify(metricWeatherData.current).length > 2 ? (
-                <WeatherPanel metricWeatherData={metricWeatherData.current} imperialWeatherData={imperialWeatherData.current} />
-            ) : null}
-            <APIProvider apiKey={apiKey}>
-                <Map
-                    style={{width: '80vw', height: '70vh'}}
-                    defaultCenter={location.location}
-                    defaultZoom={defaultMapZoom}
-                    gestureHandling='none'
-                    disableDefaultUI
-                    mapId={'DEMO_MAP_ID'}
-                    draggableCursor={'default'}
-                >
-                    {/* <PoiMarkers pois={[location]} /> */}
-                    <CenterAt target={selected} />
-                </Map>
-            </APIProvider>
+            <Group pos={'relative'}>
+                <APIProvider apiKey={apiKey}>
+                    <Map
+                        style={{height: '60vh', width: '80vw'}}
+                        defaultCenter={location.location}
+                        defaultZoom={defaultMapZoom}
+                        gestureHandling='none'
+                        disableDefaultUI
+                        mapId={'DEMO_MAP_ID'}
+                        draggableCursor={'default'}
+                    >
+                        {/* <PoiMarkers pois={[location]} /> */}
+                        <CenterAt target={selected} />
+                    </Map>
+                </APIProvider>
+                {JSON.stringify(metricWeatherData.current).length > 2 ? (
+                    <WeatherPanel metricWeatherData={metricWeatherData.current} imperialWeatherData={imperialWeatherData.current} />
+                ) : null}
+            </Group>
         </div>
     )
 }
