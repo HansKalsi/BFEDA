@@ -77,9 +77,10 @@ export function HomeScreen() {
                     style={{width: '80vw', height: '70vh'}}
                     defaultCenter={location.location}
                     defaultZoom={defaultMapZoom}
-                    gestureHandling='auto'
+                    gestureHandling='none'
                     disableDefaultUI
                     mapId={'DEMO_MAP_ID'}
+                    draggableCursor={'default'}
                 >
                     {/* <PoiMarkers pois={[location]} /> */}
                     <CenterAt target={selected} />
