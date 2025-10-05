@@ -1,8 +1,8 @@
-import { Alert, Autocomplete, Group } from "@mantine/core";
+import { Alert, Group } from "@mantine/core";
 import { APIProvider, Map, Marker, useMap } from "@vis.gl/react-google-maps";
 import { PoiMarkers, type Poi } from "./PoiMarkers";
-import usePlacesAutocomplete, { getGeocode, getLatLng } from "use-places-autocomplete";
 import { useEffect, useState } from "react";
+import { PlacesAutocomplete } from "./PlacesAutocomplete";
 
 export function HomeScreen() {
     const apiKey = import.meta.env.VITE_GOOGLE_MAPS_API_KEY as string;
@@ -51,31 +51,5 @@ export function HomeScreen() {
                 </Map>
             </APIProvider>
         </div>
-    )
-}
-
-const PlacesAutocomplete =  ({ setSelected }: { setSelected: any }) => {
-    const {
-        ready,
-        setValue,
-        suggestions: { status, data },
-    } = usePlacesAutocomplete();
-
-    const handleSelect = async (value: string) => {
-        setValue(value);
-
-        const results = await getGeocode({ address: value });
-        const { lat, lng } = await getLatLng(results[0]);
-        setSelected({ lat, lng });
-    }
-
-    return (
-        <Autocomplete
-            miw={300}
-            placeholder="Type a city name..."
-            onChange={handleSelect}
-            data={status === "OK" ? data.map(({ place_id, description }) => ({ value: description, label: description })) : []}
-            disabled={!ready}
-        />
     )
 }
