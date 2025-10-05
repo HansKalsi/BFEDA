@@ -1,20 +1,55 @@
 import { Alert, Group } from "@mantine/core";
 import { APIProvider, Map, Marker, useMap } from "@vis.gl/react-google-maps";
 import { PoiMarkers, type Poi } from "./PoiMarkers";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { PlacesAutocomplete } from "./PlacesAutocomplete";
 
 export function HomeScreen() {
     const apiKey = import.meta.env.VITE_GOOGLE_MAPS_API_KEY as string;
+    const openWeatherApiKey = import.meta.env.VITE_OPENWEATHER_API_KEY as string;
     const [location, setLocation] = useState<Poi>({key: 'london', location: { lat: 51.5072, lng: -0.1276 }});
     const [selected, setSelected] = useState(null);
     const defaultMapZoom = 8;
+    const prevLocation = useRef({key: '', location: {lat: 0, lng: 0}});
 
     useEffect(() => {
-        if (selected) {
-            setLocation({key: "selection", location: selected});
-        }
+        if (!selected) return;
+
+        const handle = setTimeout(() => {
+            setLocation({ key: "selection", location: selected });
+        }, 800);
+
+        return () => clearTimeout(handle);
     }, [selected]);
+
+    useEffect(() => {
+        if (location) {
+            console.log(prevLocation);
+            if (prevLocation.current && prevLocation.current.location.lat === location.location.lat && prevLocation.current.location.lng === location.location.lng) {
+                console.log("Location unchanged, skipping fetch");
+                return;
+            }
+            console.log("Selected location:", location);
+            const controller = new AbortController();
+            // test api call
+            fetchWeatherData(location.location.lat, location.location.lng, controller.signal).then(data => {
+                console.log("Weather data:", data);
+                prevLocation.current = location;
+            }).catch((err) => {
+                if (err?.name !== 'AbortError') {
+                    console.error('Weather fetch failed', err);
+                }
+            });
+
+            return () => controller.abort();
+        }
+    }, [location]);
+
+    async function fetchWeatherData(lat: number, lng: number, signal?: AbortSignal) {
+        const response = await fetch(`https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lng}&appid=${openWeatherApiKey}`, { signal });
+        const data = await response.json();
+        return data;
+    }
 
     function CenterAt({ target }: { target: any }) {
         const map = useMap();
