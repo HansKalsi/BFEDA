@@ -5,7 +5,7 @@ import { HomeScreen } from './components/HomeScreen';
 
 function App() {
   return (
-    <MantineProvider>
+    <MantineProvider defaultColorScheme='dark'>
       <HomeScreen />
     </MantineProvider>
   )
