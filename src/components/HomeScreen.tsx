@@ -8,6 +8,7 @@ export function HomeScreen() {
     const apiKey = import.meta.env.VITE_GOOGLE_MAPS_API_KEY as string;
     const [location, setLocation] = useState<Poi>({key: 'london', location: { lat: 51.5072, lng: -0.1276 }});
     const [selected, setSelected] = useState(null);
+    const defaultMapZoom = 8;
 
     useEffect(() => {
         if (selected) {
@@ -20,7 +21,7 @@ export function HomeScreen() {
         useEffect(() => {
             if (!map || !target) return;
             map.setCenter(target);
-            map.setZoom(8); // keep it at 8
+            map.setZoom(defaultMapZoom);
         }, [map, target]);
         return target ? <Marker position={target} /> : null;
     }
@@ -40,7 +41,7 @@ export function HomeScreen() {
                 <Map
                     style={{width: '80vw', height: '70vh'}}
                     defaultCenter={location.location}
-                    defaultZoom={8}
+                    defaultZoom={defaultMapZoom}
                     gestureHandling='auto'
                     disableDefaultUI
                     mapId={'DEMO_MAP_ID'}
