@@ -3,6 +3,7 @@ import { APIProvider, Map, Marker, useMap } from "@vis.gl/react-google-maps";
 import { PoiMarkers, type Poi } from "./PoiMarkers";
 import { useEffect, useRef, useState } from "react";
 import { PlacesAutocomplete } from "./PlacesAutocomplete";
+import { WeatherPanel } from "./WeatherPanel";
 
 export function HomeScreen() {
     const apiKey = import.meta.env.VITE_GOOGLE_MAPS_API_KEY as string;
@@ -11,6 +12,8 @@ export function HomeScreen() {
     const [selected, setSelected] = useState(null);
     const defaultMapZoom = 8;
     const prevLocation = useRef({key: '', location: {lat: 0, lng: 0}});
+    const metricWeatherData = useRef({} as any);
+    const imperialWeatherData = useRef({} as any);
 
     useEffect(() => {
         if (!selected) return;
@@ -32,9 +35,14 @@ export function HomeScreen() {
             console.log("Selected location:", location);
             const controller = new AbortController();
             // test api call
-            fetchWeatherData(location.location.lat, location.location.lng, controller.signal).then(data => {
+            fetchWeatherData(location.location.lat, location.location.lng, controller.signal, 'metric').then(data => {
                 console.log("Weather data:", data);
+                metricWeatherData.current = data;
                 prevLocation.current = location;
+                fetchWeatherData(location.location.lat, location.location.lng, controller.signal, 'imperial').then(data => {
+                    console.log("Weather data (imperial):", data);
+                    imperialWeatherData.current = data;
+                });
             }).catch((err) => {
                 if (err?.name !== 'AbortError') {
                     console.error('Weather fetch failed', err);
@@ -45,8 +53,8 @@ export function HomeScreen() {
         }
     }, [location]);
 
-    async function fetchWeatherData(lat: number, lng: number, signal?: AbortSignal) {
-        const response = await fetch(`https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lng}&appid=${openWeatherApiKey}`, { signal });
+    async function fetchWeatherData(lat: number, lng: number, signal?: AbortSignal, unit: string = 'standard') {
+        const response = await fetch(`https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lng}&appid=${openWeatherApiKey}&units=${unit}`, { signal });
         const data = await response.json();
         return data;
     }
@@ -72,6 +80,9 @@ export function HomeScreen() {
             <Group mb="xl" justify="center">
                 <PlacesAutocomplete setSelected={setSelected} />
             </Group>
+            {JSON.stringify(metricWeatherData.current).length > 2 ? (
+                <WeatherPanel metricWeatherData={metricWeatherData.current} imperialWeatherData={imperialWeatherData.current} />
+            ) : null}
             <APIProvider apiKey={apiKey}>
                 <Map
                     style={{width: '80vw', height: '70vh'}}
