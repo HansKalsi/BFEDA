@@ -81,7 +81,7 @@ export function HomeScreen() {
                     disableDefaultUI
                     mapId={'DEMO_MAP_ID'}
                 >
-                    <PoiMarkers pois={[location]} />
+                    {/* <PoiMarkers pois={[location]} /> */}
                     <CenterAt target={selected} />
                 </Map>
             </APIProvider>
