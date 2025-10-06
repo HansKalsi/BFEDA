@@ -22,3 +22,4 @@
 # Further Development
 
 - If any code expansion is undertaken, ensure to run `npm run test` to ensure nothings broken
+- `npm run test:coverage` will show you test coverage
