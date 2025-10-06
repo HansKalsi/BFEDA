@@ -1,6 +1,13 @@
 [![Tested with Vitest](https://img.shields.io/badge/tested%20with-vitest-6E9F18?logo=vitest&logoColor=white)](https://vitest.dev/)
 [![Coverage Report](https://img.shields.io/badge/coverage-vitest%20report-blue)](./coverage/index.html)
 
+# See It Live
+
+[Vercel Deployment](https://bfeda.vercel.app/)
+
+- [Brainstorming/Prepation Document](https://docs.google.com/document/d/1eAMTkJJhg03ffocmJEF08bL3qXKrBsJskDWLey2kC3U/edit?usp=sharing)
+  - Includes the API key for OpenWeather
+
 # Setup Instructions
 
 - Pull the code to a local folder
