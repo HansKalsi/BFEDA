@@ -1,3 +1,6 @@
+[![Tested with Vitest](https://img.shields.io/badge/tested%20with-vitest-6E9F18?logo=vitest&logoColor=white)](https://vitest.dev/)
+[![Coverage Report](https://img.shields.io/badge/coverage-vitest%20report-blue)](./coverage/index.html)
+
 # Setup Instructions
 
 - Pull the code to a local folder
@@ -15,3 +18,7 @@
   - A dropdown list will appear with near matches that can be selected from
 - Weather data is auto-imported for the selected city/active-selection
 - Should work on mobile too
+
+# Further Development
+
+- If any code expansion is undertaken, ensure to run `npm run test` to ensure nothings broken
