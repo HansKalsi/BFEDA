@@ -17,10 +17,8 @@ export function HomeScreen() {
 
     useEffect(() => {
         if (!selected) return;
-        console.log("Selected changed:", selected);
 
         const handle = setTimeout(() => {
-            console.log("Updating location to:", selected);
             setLocation({ key: "selection", location: selected });
         }, 200);
 
@@ -29,21 +27,15 @@ export function HomeScreen() {
 
     useEffect(() => {
         if (location) {
-            console.warn("Location changed:", location);
-            console.log(prevLocation);
             if (prevLocation.current && prevLocation.current.location.lat === location.location.lat && prevLocation.current.location.lng === location.location.lng) {
-                console.log("Location unchanged, skipping fetch");
                 return;
             }
-            console.log("Selected location:", location);
             const controller = new AbortController();
             // Fetch both units in parallel and update state when done.
             Promise.all([
                 fetchWeatherData(location.location.lat, location.location.lng, controller.signal, 'metric'),
                 fetchWeatherData(location.location.lat, location.location.lng, controller.signal, 'imperial')
             ]).then(([metric, imperial]) => {
-                console.log("Weather data (metric):", metric);
-                console.log("Weather data (imperial):", imperial);
                 setMetricWeatherData(metric);
                 setImperialWeatherData(imperial);
                 prevLocation.current = location;
