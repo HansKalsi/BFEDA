@@ -67,7 +67,7 @@ export function HomeScreen() {
 
     return (
         <div>
-            <h1>City Weather Search</h1>
+            <h1>Worldwide City Weather Conditions</h1>
             {!apiKey && (
                 <Alert mb="md" color="red">
                     You need to setup your own Google Maps API key in a .env file as VITE_GOOGLE_MAPS_API_KEY to see the map here.
