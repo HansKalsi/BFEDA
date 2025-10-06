@@ -88,7 +88,7 @@ export function HomeScreen() {
                         draggableCursor={'default'}
                     >
                         {/* <PoiMarkers pois={[location]} /> */}
-                        <CenterAt target={selected} />
+                        <CenterAt target={selected || location.location} />
                     </Map>
                 </APIProvider>
                 {metricWeatherData ? (
